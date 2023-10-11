@@ -1,13 +1,14 @@
 import "./Movies.css";
 import React, { useState, useCallback } from "react";
 
-import Api from "../../utils/Api";
+//import Api from "../../utils/Api";
 
 import MoviesList from "../MoviesList/MoviesList";
 import SearchForm from "../SearchForm/SearchForm";
 
 import Loader from "../Loader/Loader";
 import ProtectedRoute from "../ProtectedRoute";
+import ApiMovies from "../../utils/ApiMovies";
 
 const Movies = () => {
     const localStorageValues = JSON.parse(localStorage.getItem(`movies`)) ?? {};
@@ -33,7 +34,7 @@ const Movies = () => {
         }
         setIsLoading(true);
 
-        const moviesRes = await Api.requestMovies();
+        const moviesRes = await ApiMovies.requestMovies();
         const filteredMovies = moviesRes.filter((movie) => {
             const lowerNameRu = movie.nameRU.toLowerCase();
             const lowerQuery = q.toLowerCase();
