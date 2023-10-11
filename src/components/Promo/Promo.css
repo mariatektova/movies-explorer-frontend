@@ -1,0 +1,41 @@
+.promo {
+  border-radius: 10rem;
+  background: #272727;
+  margin: 0rem 14rem;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.promo__title {
+  color: #FFF;
+  text-align: center;
+  font-size: 29rem;
+  font-weight: 400;
+  line-height: 37rem;
+  letter-spacing: -1.16rem;
+  padding: 220rem 0 217rem;
+  margin: 0;
+}
+
+@media screen and (min-width: 768px){
+
+  .promo__title {
+    font-size: 40rem;
+    padding: 350rem 24rem 314rem;
+    line-height: 52rem;
+  letter-spacing: -1.6rem;
+  }
+}
+@media screen and (min-width: 1028px){
+   .promo {
+    margin: 20rem 14rem;
+    }
+  .promo__title {
+    font-size: 50rem;
+    line-height: 58rem;
+    letter-spacing: -2rem;
+    padding: 160rem 160rem 151rem;
+  }
+}

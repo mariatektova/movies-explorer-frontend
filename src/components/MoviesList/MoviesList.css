@@ -1,0 +1,40 @@
+.movies__list {
+  margin: 80rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 37rem 24rem;
+  grid-template-columns: repeat(auto-fit, minmax(auto, 364rem));
+  justify-content: center;
+}
+
+.movies__button-add {
+  background-color:#2F2F2F;
+  color: #fff;
+  align-self: center;
+  width: 50%;
+  font-size: 12rem;
+  border: none;
+  margin: 30rem 0;
+  padding: 10rem;
+}
+
+
+@media screen and (max-width: 920px) {
+  .movies__list {
+    gap: 30rem;
+    grid-template-columns: repeat(auto-fit, minmax(auto, 339rem));
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .movies__list {
+    margin: 51rem 0 0;
+    gap: 14rem;
+    grid-template-columns: repeat(auto-fit, minmax(auto, 300rem));
+  }
+
+.movies__button-more {
+  width: 80%;
+}
+
+}
