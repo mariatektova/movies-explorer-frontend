@@ -75,7 +75,7 @@ const Login = () => {
             name="email"
             value={validation.values.email || ''}
             onChange={validation.handleChange}
-            type="email"
+            //type="email"
             placeholder="Введите почту"
             minLength="2"
             maxLength="40"

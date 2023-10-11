@@ -21,7 +21,6 @@ const MoviesList = ({
         return movies.slice(0, isMoviesAdd + moviesQuantatyRendering);
     }, [movies, isMoviesAdd, size]);
 
-
     const handleClick = () => {
         setIsMoviesAdd((prev) => prev + (size.width >= desktopSize ? 3 : 2));
     }

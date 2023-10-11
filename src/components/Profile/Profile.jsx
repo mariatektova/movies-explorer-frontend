@@ -63,6 +63,7 @@ const Profile = () => {
     setEmail(ev.target.value);
   }
 
+
   return (
     <section className="profile">
       <h1 className="profile__welcome-message">Привет, {profile.name}!</h1>

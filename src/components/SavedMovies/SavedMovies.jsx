@@ -40,7 +40,7 @@ const SavedMovies = () => {
         const lowerQuery = searchQuery.toLowerCase();
         return (lowerNameRu.includes(lowerQuery)) && (movie.duration < 40 || !isShort);
     });
-
+    console.log(filteredMovies);
     return (
         <ProtectedRoute>
             <section className="savedmovies">
@@ -50,7 +50,7 @@ const SavedMovies = () => {
                 ) : !!filteredMovies.length ? (
                     <MoviesList movies={filteredMovies} />
                 ) : (
-                    (!filteredMovies.length || !searchQuery) && (
+                    (!!filteredMovies.length || !searchQuery) && (
                         <p className="savedmovies__not-found">По вашему запросу ничего не найдено</p>
                     ))}
             </section>

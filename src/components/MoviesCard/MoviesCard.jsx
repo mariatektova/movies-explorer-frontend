@@ -7,13 +7,15 @@ import Api from '../../utils/Api';
 
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 
+
 const MoviesCard = ({ card }) => {
   const IMAGE_URL = 'https://api.nomoreparties.co/';
   const location = useLocation();
   const { savedMovies, setSavedMovies } = useContext(CurrentUserContext);
 
 
-  const handleSaveMovie = () => {
+  const handleSaveMovie = (e) => {
+
     Api.requestApi(`/movies`, `POST`, {
       country: card.country,
       director: card.director,
@@ -32,6 +34,7 @@ const MoviesCard = ({ card }) => {
         console.log({ nextSavedMovies, savedMovies, res });
 
         setSavedMovies(nextSavedMovies);
+
       })
       .catch(console.log);
   }
