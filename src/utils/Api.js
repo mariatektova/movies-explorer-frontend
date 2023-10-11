@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 
 class Api {
-  apiUrl = `http://api.mariatektova.diploma.nomoredomains.rocks`;
+  apiUrl = `https://api.mariatektova.diploma.nomoredomains.rocks`;
   moviesUrl = `https://api.nomoreparties.co/beatfilm-movies`;
 
   request = async (url, method, params, headers = {}) => {
