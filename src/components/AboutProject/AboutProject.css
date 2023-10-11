@@ -1,0 +1,131 @@
+.about_project {
+  display: flex;
+  flex-direction: column;
+  margin: 70rem 18rem;
+}
+
+.about_project__title {
+  color: #FFF;
+  font-size: 18rem;
+  letter-spacing: -0.72rem;
+  font-weight: 400;
+  margin-bottom: 60rem;
+  padding-bottom: 28rem;
+  border-bottom: 1rem solid rgba(218, 218, 218, 1);
+}
+
+.about_project__container {
+  display: flex;
+  flex-direction: column;
+  gap: 56rem;
+  margin-bottom: 60rem;
+}
+
+.about_project__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.about_project__info-title {
+  color: #FFF;
+  font-size: 18rem;
+  font-weight: 400;
+  letter-spacing: -0.72rem;
+  margin: 0;
+}
+
+.about_project__info-text {
+  color: #FFF;
+  font-size: 11rem;
+  line-height: 16rem;
+  margin: 0;
+  padding-top: 16rem;
+
+}
+
+
+.about__project__weeks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  grid-template-rows: repeat(2, 1fr); 
+  grid-column-gap: 0rem;
+  grid-row-gap: 0rem; 
+}
+
+.about__project__weeks-text {
+  text-align: center;
+  font-size: 11rem;
+  padding: 10rem 11rem;
+  margin: 0;
+  color: rgba(160, 160, 160, 1);
+}
+.about__project__weeks-text:nth-child(1){
+  grid-area: 1 / 1 / 2 / 2; 
+  background: #3DDC84;
+  color: #000;
+  
+}
+
+.about__project__weeks-text:nth-child(2){
+  grid-area: 1 / 2 / 2 / 4;
+  color: #FFF;
+  background-color: rgba(48, 48, 48, 1);
+}
+.about__project__weeks-text:nth-child(3){
+   grid-area: 2 / 1 / 3 / 2; 
+}
+.about__project__weeks-text:nth-child(4){
+  grid-area: 2 / 2 / 3 / 4; 
+}
+
+
+@media screen and (min-width: 768px) {
+  .about_project {
+    margin: 0rem 50rem;
+    font-size: 22rem;
+    letter-spacing: -0.88rem;
+  }
+
+  .about_project__container {
+    flex-direction: row;
+    margin-bottom: 93rem;
+    gap: 30rem;
+  }
+
+  .about_project__info-title {
+    font-size: 20rem;
+    letter-spacing: -0.8rem;
+  }
+
+  .about_project__info-text {
+    font-size: 12rem;
+    line-height: 18rem;
+  }
+
+.about__project__weeks {
+  font-size: 14rem;
+}
+
+}
+
+@media screen and (min-width: 1024px) {
+  .about_project {
+    margin: 110rem 70rem;
+  }
+
+  .about_project__title {
+    font-size: 22rem;
+    letter-spacing: -0.88rem;
+    margin-bottom: 70rem;
+    
+  }
+
+  .about_project__info-text {
+    font-size: 14rem;
+    line-height: 20rem;
+  }
+ 
+  .about_project__container {
+    margin-bottom: 110rem;
+  }
+}

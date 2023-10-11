@@ -1,0 +1,44 @@
+.nav__burger {
+ display: flex;
+ flex-direction: column;
+ margin: 0auto;
+}
+
+.nav-burger__list{
+  display: flex;
+  flex-direction: column;
+  font-size: 20rem;
+  line-height: 20rem;
+  list-style-type: none;
+  color: #fff;
+  gap: 30rem;
+  align-items: center;
+}
+
+.nav-burger__item {
+ font-weight: 400;
+  font-size: 13rem;
+  line-height: 18rem;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.1s linear;
+  white-space: nowrap;
+
+}
+.nav-burger__account-button {
+  font-weight: 500;
+  font-size: 14rem;
+  line-height: 16rem;
+  border: none;
+  color: #fff;
+  align-self: center;
+  justify-self: center;
+  border-radius: 20rem;
+  background-color: #313131;
+  padding: 8rem 15rem;
+  margin-left: 45%;
+  margin-top: 70%;
+}
+.link{
+  text-decoration: none;
+}
