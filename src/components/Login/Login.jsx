@@ -17,7 +17,7 @@ import { CurrentUserContext } from "../../context/CurrentUserContext";
 
 const Login = () => {
   const validation = useFormAndValidation();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const context = useContext(CurrentUserContext);
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -30,7 +30,7 @@ const Login = () => {
 
   const handleModalClose = useCallback(() => {
     setModalOpen(false);
-    navigation('/movies');
+    navigate('/movies');
   }, []);
 
   function handleSubmit(e) {

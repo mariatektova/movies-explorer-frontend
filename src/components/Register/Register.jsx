@@ -29,10 +29,9 @@ const Register = () => {
   }, []);
 
   const handleModalClose = useCallback(() => {
-    if (!!isModalSuccess) {
-      navigate('/movies');
-    }
     setModalOpen(false);
+    navigate('/movies');
+
   }, []);
 
   const handleSubmit = useCallback(async (e) => {

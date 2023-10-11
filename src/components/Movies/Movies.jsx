@@ -7,11 +7,11 @@ import MoviesList from "../MoviesList/MoviesList";
 import SearchForm from "../SearchForm/SearchForm";
 
 import Loader from "../Loader/Loader";
+import ProtectedRoute from "../ProtectedRoute";
 
 const Movies = () => {
     const localStorageValues = JSON.parse(localStorage.getItem(`movies`)) ?? {};
 
-    //console.log(`render`, localStorageValues);
 
     const [movies, setMovies] = useState(localStorageValues.movies ?? []);
     const [searchQuery, setSearchQuery] = useState(localStorageValues.searchQuery ?? ``);
@@ -65,17 +65,19 @@ const Movies = () => {
         return movie.duration < 40 || !isShort;
     });
     return (
-        <section className="movies">
-            <SearchForm handleSearch={handleSearch} handleShortChange={handleShortChange} presetSearchQuery={searchQuery} presetIsShort={isShort} />
-            {isLoading ? (
-                <Loader />
-            ) : !!filteredMovies.length && !!searchQuery ? (
-                <MoviesList movies={filteredMovies} />
-            ) : (
-                (!filteredMovies.length || !searchQuery) && (
-                    <p className="movies__not-found">По вашему запросу ничего не найдено</p>
-                ))}
-        </section>
+        <ProtectedRoute>
+            <section className="movies">
+                <SearchForm handleSearch={handleSearch} handleShortChange={handleShortChange} presetSearchQuery={searchQuery} presetIsShort={isShort} />
+                {isLoading ? (
+                    <Loader />
+                ) : !!filteredMovies.length && !!searchQuery ? (
+                    <MoviesList movies={filteredMovies} />
+                ) : (
+                    (!filteredMovies.length || !searchQuery) && (
+                        <p className="movies__not-found">По вашему запросу ничего не найдено</p>
+                    ))}
+            </section>
+        </ProtectedRoute>
     );
 };
 export default Movies;
