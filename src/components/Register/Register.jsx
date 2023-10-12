@@ -78,7 +78,7 @@ const Register = () => {
         <div className="register__input-field">
           <label className="register__label" htmlFor="register-name_input">Имя</label>
           <input className="register__input" id="register-name_input" name="name" value={validation.values.name ?? ``} onChange={validation.handleChange} type="text" placeholder="Введите имя" minLength="2" maxLength="40" required />
-          <span className={`register__input-error`}>{validateName(validation.values.name).message}</span>
+          <span className={`register__input-error register__input-error_active`}>{validateName(validation.values.name).message}</span>
         </div>
 
         <div className="register__input-field">
@@ -89,15 +89,12 @@ const Register = () => {
 
         <div className="register__input-field">
           <label className="register__label" htmlFor="register-password_input">Пароль </label>
-          <input className="register__input" id="register-password_input" name="password" value={validation.values.password ?? ``} onChange={validation.handleChange} type="password" placeholder="Введите пароль" minLength="1" required />
+          <input className="register__input" id="register-password_input" name="password" value={validation.values.password ?? ``} onChange={validation.handleChange} type="password" placeholder="Введите пароль" minLength="6" required />
           <span className={`register__input-error ${validation.isValid ? '' : 'register-form__input-error_active'}`} >
             {validation.errors.password}
           </span>
-
         </div>
-
         <button type="submit" className="register__button" disabled={!validation.isValid || validateEmail(validation.values.email).invalid || validateName(validation.values.name).invalid}>Зарегистрироваться</button>
-
         <div className="register-page__text">
           <span>Уже зарегистрированы? </span>
           <Link to="/signin" className="register-page__link">Войти</Link>

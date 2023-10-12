@@ -6,7 +6,7 @@ import { CurrentUserContext } from '../../context/CurrentUserContext';
 import { Link } from 'react-router-dom';
 
 import Navigation from "../../components/Navigation/Navigation";
-import Burger from '../Drawer/Burger';
+import Burger from '../Burger/Burger';
 
 const Header = () => {
   const resize = useResize();

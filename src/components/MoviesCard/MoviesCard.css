@@ -78,12 +78,16 @@
 }
 
 .moviescard__button_save-saved {
+  position: absolute;
   width: 21rem;
   height: 21rem;
 
   background: no-repeat center/contain url('../../images/icon-save.svg');
 
   color: transparent;
+
+  top: 14rem;
+  right: 14rem;
 }
 
 .moviescard__button_delete {

@@ -14,8 +14,8 @@ const MoviesCard = ({ card }) => {
   const { savedMovies, setSavedMovies } = useContext(CurrentUserContext);
 
 
-  const handleSaveMovie = (e) => {
 
+  const handleSaveMovie = () => {
     Api.requestApi(`/movies`, `POST`, {
       country: card.country,
       director: card.director,
@@ -32,23 +32,30 @@ const MoviesCard = ({ card }) => {
       .then((res) => {
         const nextSavedMovies = [...savedMovies, res];
         console.log({ nextSavedMovies, savedMovies, res });
-
         setSavedMovies(nextSavedMovies);
-
       })
-      .catch(console.log);
-  }
 
+      .catch((err) => {
+        console.log(err);
+      })
+
+  }
   const handleDeleteMovie = () => {
     Api.requestApi(`/movies/${card._id}`, `DELETE`)
       .then(() => {
         const nextSavedMovies = savedMovies.filter(movie => movie.movieId !== card.movieId);
         setSavedMovies(nextSavedMovies);
       })
-      .catch(console.log);
+      .catch((err) => console.log(err));
   };
 
   const isSaved = !!(savedMovies ?? []).find(movie => movie.movieId === card.id);
+
+  function getTimeFromMins(mins) {
+    let hours = Math.trunc(mins / 60);
+    let minutes = mins % 60;
+    return hours + 'ч. ' + minutes + 'м.';
+  };
 
   return (
     <li className="moviescard">
@@ -57,8 +64,8 @@ const MoviesCard = ({ card }) => {
       </a>
       <div className="moviescard__details">
         <p className="moviescard__name">{card.nameRU}</p>
-        <p className="moviescard__duration">{card.duration}</p>
-        {location.pathname === '/movies' && <button onClick={handleSaveMovie} className={`moviescard__button_save ${isSaved ? 'moviescard__button_save-saved' : ''}`} disabled={!!isSaved}>{`Cохранить`}</button>}
+        <p className="moviescard__duration">{getTimeFromMins(card.duration)}</p>
+        {location.pathname === '/movies' && <button onClick={handleSaveMovie} className={`moviescard__button_save ${isSaved ? 'moviescard__button_save-saved' : ''}`} >{`Cохранить`}</button>}
         {location.pathname === '/saved-movies' && <button className={`moviescard__button_delete`} onClick={handleDeleteMovie}></button>}
       </div>
     </li>
