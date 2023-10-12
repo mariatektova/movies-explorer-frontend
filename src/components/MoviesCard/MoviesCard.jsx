@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import './MoviesCard.css';
 
@@ -7,16 +6,13 @@ import Api from '../../utils/Api';
 
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 
+import { IMAGE_URL } from '../../utils/constants';
 
 const MoviesCard = ({ card }) => {
-  const IMAGE_URL = 'https://api.nomoreparties.co/';
-  const location = useLocation();
   const { savedMovies, setSavedMovies } = useContext(CurrentUserContext);
 
-
-
   const handleSaveMovie = () => {
-    Api.requestApi(`/movies`, `POST`, {
+    Api.request(`/movies`, `POST`, {
       country: card.country,
       director: card.director,
       duration: card.duration,
@@ -31,31 +27,32 @@ const MoviesCard = ({ card }) => {
     })
       .then((res) => {
         const nextSavedMovies = [...savedMovies, res];
-        console.log({ nextSavedMovies, savedMovies, res });
         setSavedMovies(nextSavedMovies);
       })
-
       .catch((err) => {
         console.log(err);
-      })
+      });
 
   }
   const handleDeleteMovie = () => {
-    Api.requestApi(`/movies/${card._id}`, `DELETE`)
+    const saved = savedMovies.find((movie) => movie.movieId === card.id);
+    if (!saved) return;
+
+    Api.request(`/movies/${saved._id}`, `DELETE`)
       .then(() => {
-        const nextSavedMovies = savedMovies.filter(movie => movie.movieId !== card.movieId);
+        const nextSavedMovies = savedMovies.filter((movie) => movie.movieId !== card.id);
         setSavedMovies(nextSavedMovies);
       })
       .catch((err) => console.log(err));
   };
 
-  const isSaved = !!(savedMovies ?? []).find(movie => movie.movieId === card.id);
+  const isSaved = !!(savedMovies ?? []).find((movie) => movie.movieId === card.id);
 
   function getTimeFromMins(mins) {
     let hours = Math.trunc(mins / 60);
     let minutes = mins % 60;
     return hours + 'ч. ' + minutes + 'м.';
-  };
+  }
 
   return (
     <li className="moviescard">
@@ -65,8 +62,7 @@ const MoviesCard = ({ card }) => {
       <div className="moviescard__details">
         <p className="moviescard__name">{card.nameRU}</p>
         <p className="moviescard__duration">{getTimeFromMins(card.duration)}</p>
-        {location.pathname === '/movies' && <button onClick={handleSaveMovie} className={`moviescard__button_save ${isSaved ? 'moviescard__button_save-saved' : ''}`} >{`Cохранить`}</button>}
-        {location.pathname === '/saved-movies' && <button className={`moviescard__button_delete`} onClick={handleDeleteMovie}></button>}
+        <button onClick={isSaved ? handleDeleteMovie : handleSaveMovie} className={`moviescard__button_save ${isSaved ? 'moviescard__button_save-saved' : ''}`} >{`Cохранить`}</button>
       </div>
     </li>
   );

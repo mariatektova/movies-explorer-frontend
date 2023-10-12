@@ -1,30 +1,25 @@
 /* eslint-disable import/no-anonymous-default-export */
 
 class Api {
-  apiUrl = `https://api.mariatektova.diploma.nomoredomains.rocks`;
-  moviesUrl = `https://api.nomoreparties.co/beatfilm-movies`;
+    url = `https://api.mariatektova.diploma.nomoredomains.rocks`;
 
-  request = async (url, method, params, headers = {}) => {
-      const token = localStorage.getItem(`jwt`);
-      const res = await fetch(url, {
-          method,
-          headers: {
-              ...{'Content-Type': `application/json`, 'Authorization': `Bearer ${token}`},
-              ...headers
-          },
-          body: JSON.stringify(params)
-      });
-      return await res.json();
-  }
+    request = async (endpoint, method = `GET`, params = {}) => {
+        const token = localStorage.getItem(`jwt`);
 
-    requestApi = async (endpoint = ``, method, params, headers) => {
-        return await this.request(`${this.apiUrl}${endpoint}`, method, params, headers);
-    }
+        const settings = {
+            method,
+            headers: {
+                'Content-Type': `application/json`, 'Authorization': `Bearer ${token}`
+            }
+        };
 
-    requestMovies = async (endpoint = ``, method, params, headers) => {
-        return await this.request(`${this.moviesUrl}${endpoint}`, method, params, headers);
+        if (method !== `GET`) {
+            settings['body'] = JSON.stringify(params);
+        }
+
+        const res = await fetch(`${this.url}${endpoint}`, settings);
+        return await res.json();
     }
 }
 
 export default new Api();
-

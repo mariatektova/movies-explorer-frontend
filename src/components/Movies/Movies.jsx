@@ -1,25 +1,20 @@
 import "./Movies.css";
 import React, { useState, useCallback } from "react";
 
-//import Api from "../../utils/Api";
-
 import MoviesList from "../MoviesList/MoviesList";
 import SearchForm from "../SearchForm/SearchForm";
-
 import Loader from "../Loader/Loader";
 import ProtectedRoute from "../ProtectedRoute";
+
 import ApiMovies from "../../utils/ApiMovies";
 
 const Movies = () => {
     const localStorageValues = JSON.parse(localStorage.getItem(`movies`)) ?? {};
 
-
     const [movies, setMovies] = useState(localStorageValues.movies ?? []);
     const [searchQuery, setSearchQuery] = useState(localStorageValues.searchQuery ?? ``);
     const [isShort, setShort] = useState(!!localStorageValues.isShort);
     const [isLoading, setIsLoading] = useState(false);
-
-
 
     const handleSearch = useCallback(async (q) => {
         if (!q) {
@@ -34,7 +29,7 @@ const Movies = () => {
         }
         setIsLoading(true);
 
-        const moviesRes = await ApiMovies.requestMovies();
+        const moviesRes = await ApiMovies.request();
         const filteredMovies = moviesRes.filter((movie) => {
             const lowerNameRu = movie.nameRU.toLowerCase();
             const lowerQuery = q.toLowerCase();
@@ -62,21 +57,26 @@ const Movies = () => {
             movies
         }));
     }, [movies, searchQuery]);
+
     const filteredMovies = movies.filter((movie) => {
         return movie.duration < 40 || !isShort;
     });
+
+    const isEmpty = !filteredMovies.length || !searchQuery;
+
     return (
         <ProtectedRoute>
             <section className="movies">
                 <SearchForm handleSearch={handleSearch} handleShortChange={handleShortChange} presetSearchQuery={searchQuery} presetIsShort={isShort} />
-                {isLoading ? (
-                    <Loader />
-                ) : !!filteredMovies.length && !!searchQuery ? (
-                    <MoviesList movies={filteredMovies} />
-                ) : (
-                    (!filteredMovies.length || !searchQuery) && (
-                        <p className="movies__not-found">По вашему запросу ничего не найдено</p>
-                    ))}
+
+                {!!isLoading && <Loader />}
+
+                {!isLoading && (
+                    <>
+                        {!!isEmpty && <p className="movies__not-found">По вашему запросу ничего не найдено</p>}
+                        {!isEmpty && <MoviesList movies={filteredMovies} />}
+                    </>
+                )}
             </section>
         </ProtectedRoute>
     );

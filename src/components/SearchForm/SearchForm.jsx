@@ -13,7 +13,9 @@ const SearchForm = (props) => {
     e.preventDefault();
     props.handleSearch(e.target.search.value);
 
+
   }, [props.handleSearch]);
+
 
   const handleShortChange = useCallback((ev) => {
     props.handleShortChange(!!ev.target.checked);
@@ -22,13 +24,12 @@ const SearchForm = (props) => {
   return (
     <div className="search">
       <form className="search__form" onSubmit={handleSubmit}>
-        <input className="search__form-input" name="search" placeholder="Фильм" min="1" defaultValue={props.presetSearchQuery} />
-        <span className={`search__form__input-error`}></span>
+        <input className="search__form-input" name="search" placeholder={'Фильм'} min="1" defaultValue={props.presetSearchQuery} />
+
         <button type="submit" className="search__form-button" style={{
           backgroundImage: `url(${IconFind})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "100%"
         }}></button>
       </form>
-
       <ToggleButton isChecked={props.presetIsShort} onChange={handleShortChange} />
     </div>
   );

@@ -36,7 +36,7 @@ const Login = () => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    Api.requestApi(`/signin`, `POST`, {
+    Api.request(`/signin`, `POST`, {
       email: e.target.email.value,
       password: e.target.password.value
     })

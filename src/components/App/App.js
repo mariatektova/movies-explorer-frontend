@@ -16,11 +16,18 @@ const App = () => {
 
     useEffect(() => {
         if (!!token) {
-            Api.requestApi(`/users/me`, `GET`)
-                .then(setProfile)
+            Api.request(`/users/me`, `GET`)
+                .then((res) => {
+                    if (!res._id) {
+                        localStorage.removeItem(`jwt`);
+                        setToken(null);
+                    } else {
+                        setProfile(res);
+                    }
+                })
                 .catch(null);
 
-            Api.requestApi(`/movies`)
+            Api.request(`/movies`)
                 .then(setSavedMovies)
                 .catch(null);
         } else {
@@ -30,7 +37,7 @@ const App = () => {
     }, [token]);
 
     return (
-        <CurrentUserContext.Provider value={{profile, setProfile, setToken, savedMovies, setSavedMovies}}>
+        <CurrentUserContext.Provider value={{profile, setProfile, token, setToken, savedMovies, setSavedMovies}}>
             <div className={`app`}>
                 <Header />
                 <Routes>

@@ -22,7 +22,6 @@ const Profile = () => {
 
   const [disabled, setDisabled] = useState(true);
 
-
   const handleModalOpen = useCallback((isSuccess) => {
     setModalSuccess(isSuccess);
     setModalOpen(true);
@@ -33,26 +32,18 @@ const Profile = () => {
     setEmail(profile.email);
   }, [profile]);
 
-
-
-
   const handleModalClose = useCallback(() => {
     setModalOpen(false);
   }, []);
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    const reqProf = await Api.requestApi('/users/me', 'PATCH', {
+    const reqProf = await Api.request('/users/me', 'PATCH', {
       name: e.target.name.value,
       email: e.target.email.value
     })
-
-    if (!!reqProf.email) {
-      handleModalOpen(true);
-      return;
-    } else {
-      handleModalOpen(false);
-    }
+    context.setProfile(reqProf);
+    handleModalOpen(!!reqProf.email);
   }, []);
 
 
@@ -64,25 +55,13 @@ const Profile = () => {
 
   const handleChangeName = (ev) => {
     setName(ev.target.value);
-    if (ev.target.value !== profile.name) {
-      setDisabled(false);
-      return
-    } else {
-      setDisabled(true);
-    }
+    setDisabled(ev.target.value === profile.name);
   }
 
   const handleChangeEmail = (ev) => {
     setEmail(ev.target.value);
-    if (ev.target.value !== profile.email) {
-      setDisabled(false);
-      return
-    } else {
-      setDisabled(true);
-    }
+    setDisabled(ev.target.value === profile.name);
   }
-
-
 
   return (
     <ProtectedRoute>

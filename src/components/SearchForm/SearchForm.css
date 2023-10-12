@@ -12,7 +12,7 @@
   border-radius: 40px;
   background: #2F2F2F;
   width: 100%;
-  margin-bottom: 45rem;
+  margin-bottom: 30rem;
   position: relative;
 }
 
@@ -56,6 +56,17 @@
   opacity: 0.8;
 }
 
+.search__form__input-error{
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  font-size: 13rem;
+  color: #8B8B8B;
+  z-index: 2;
+  top: -50;
+  left: 40;
+
+}
 
 
 .search__form-button:focus {
@@ -68,5 +79,10 @@
   .search__form {
   padding: 0 70rem;
 
+  }
+}
+@media screen and(min-width: 365px) {
+  .search__form {
+    margin-bottom: 20rem;
   }
 }

@@ -2,9 +2,9 @@ import React, { useCallback, useContext, useState } from 'react';
 import './SavedMovies.css';
 
 import SearchForm from '../SearchForm/SearchForm';
-import MoviesList from '../MoviesList/MoviesList';
 import Loader from '../Loader/Loader';
 import ProtectedRoute from "../ProtectedRoute";
+import SavedMoviesList from "../SavedMoviesList/MoviesList";
 
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 
@@ -40,19 +40,22 @@ const SavedMovies = () => {
         const lowerQuery = searchQuery.toLowerCase();
         return (lowerNameRu.includes(lowerQuery)) && (movie.duration < 40 || !isShort);
     });
-    console.log(filteredMovies);
+
+    const isEmpty = !filteredMovies.length;
+
     return (
         <ProtectedRoute>
             <section className="savedmovies">
                 <SearchForm handleSearch={handleSearch} handleShortChange={handleShortChange} presetSearchQuery={searchQuery} presetIsShort={isShort} />
-                {isLoading ? (
-                    <Loader />
-                ) : !!filteredMovies.length ? (
-                    <MoviesList movies={filteredMovies} />
-                ) : (
-                    (!!filteredMovies.length || !searchQuery) && (
-                        <p className="savedmovies__not-found">По вашему запросу ничего не найдено</p>
-                    ))}
+
+                {!!isLoading && <Loader />}
+
+                {!isLoading && (
+                    <>
+                        {!!isEmpty && <p className="movies__not-found">По вашему запросу ничего не найдено</p>}
+                        {!isEmpty && <SavedMoviesList movies={filteredMovies} />}
+                    </>
+                )}
             </section>
         </ProtectedRoute>
     );

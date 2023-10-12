@@ -37,7 +37,7 @@ const Register = () => {
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
 
-    const regRes = await Api.requestApi(`/signup`, `POST`, {
+    const regRes = await Api.request(`/signup`, `POST`, {
       name: e.target.name.value,
       email: e.target.email.value,
       password: e.target.password.value
@@ -49,7 +49,7 @@ const Register = () => {
       return;
     }
 
-    const authRes = await Api.requestApi(`/signin`, `POST`, {
+    const authRes = await Api.request(`/signin`, `POST`, {
       email: e.target.email.value,
       password: e.target.password.value
     });
