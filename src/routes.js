@@ -1,50 +1,54 @@
 import React from "react";
-import loadable from "@loadable/component";
 
-import Loader from "./components/Loader/Loader";
+import Main from "./components/Main/Main";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
+import Profile from "./components/Profile/Profile";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Movies from "./components/Movies/Movies";
+import SavedMovies from "./components/SavedMovies/SavedMovies";
+import NotFound from "./components/NotFound/NotFound";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
     path: `/`,
-    element: loadable(() => import(`./components/Main/Main`), {
-      fallback: <Loader />
-    })
+    element: <Main />
   },
   {
     path: `/signup`,
-    element: loadable(() => import(`./components/Register/Register`), {
-      fallback: <Loader />
-    })
+    element: <Register />
   },
   {
     path: `/signin`,
-    element: loadable(() => import(`./components/Login/Login`), {
-      fallback: <Loader />
-    })
+    element: <Login />
   },
   {
     path: `/profile`,
-    element: loadable(() => import(`./components/Profile/Profile`), {
-      fallback: <Loader />
-    })
+    element: (
+        <ProtectedRoute>
+          <Profile/>
+        </ProtectedRoute>
+    )
   },
   {
     path: `/movies`,
-    element: loadable(() => import(`./components/Movies/Movies`), {
-      fallback: <Loader />
-    })
+    element: (
+      <ProtectedRoute>
+        <Movies/>
+      </ProtectedRoute>
+    )
   },
   {
     path: `/saved-movies`,
-    element: loadable(() => import(`./components/SavedMovies/SavedMovies`), {
-      fallback: <Loader />
-    })
+    element: (
+      <ProtectedRoute>
+      <SavedMovies/>
+      </ProtectedRoute>
+    )
   },
   {
     path: `*`,
-    element: loadable(() => import(`./components/NotFound/NotFound`), {
-      fallback: <Loader />
-    })
+    element: <NotFound />
   }
 ];

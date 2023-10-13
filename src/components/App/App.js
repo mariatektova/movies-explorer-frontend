@@ -45,7 +45,7 @@ const App = () => {
                         <Route
                             key={route.path}
                             path={route.path}
-                            element={route.element.render()}
+                            element={route.element}
                         />
                     ))}
                 </Routes>
