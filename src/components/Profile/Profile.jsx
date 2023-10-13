@@ -14,12 +14,11 @@ const Profile = () => {
   const context = useContext(CurrentUserContext);
   const { profile } = context;
 
-  const [name, setName] = useState(profile.name);
-  const [email, setEmail] = useState(profile.email);
+  const [name, setName] = useState(profile.name ? profile.name : ``);
+  const [email, setEmail] = useState(profile.email ? profile.name : ``);
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [isModalSuccess, setModalSuccess] = useState(false);
-
   const [disabled, setDisabled] = useState(true);
 
   const handleModalOpen = useCallback((isSuccess) => {
@@ -28,8 +27,10 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    setName(profile.name);
-    setEmail(profile.email);
+    if (!!profile) {
+      setName(profile.name);
+      setEmail(profile.email);
+    }
   }, [profile]);
 
   const handleModalClose = useCallback(() => {
