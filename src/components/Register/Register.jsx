@@ -30,9 +30,10 @@ const Register = () => {
 
   const handleModalClose = useCallback(() => {
     setModalOpen(false);
-    navigate('/movies');
-
-  }, []);
+    if (isModalSuccess) {
+      navigate('/movies');
+    }
+  }, [isModalSuccess]);
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -44,7 +45,6 @@ const Register = () => {
     });
 
     if (!regRes.email) {
-      setModalSuccess(false);
       handleModalOpen(false);
       return;
     }
@@ -57,12 +57,8 @@ const Register = () => {
     if (authRes.token) {
       localStorage.setItem(`jwt`, authRes.token);
       context.setToken(authRes.token);
-      setModalSuccess(true);
       handleModalOpen(true);
-
-
     } else {
-      setModalSuccess(false);
       handleModalOpen(false);
     }
   }, []);
