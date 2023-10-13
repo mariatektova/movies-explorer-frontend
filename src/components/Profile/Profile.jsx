@@ -19,7 +19,6 @@ const Profile = () => {
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [isModalSuccess, setModalSuccess] = useState(false);
-  const [disabled, setDisabled] = useState(true);
 
   const handleModalOpen = useCallback((isSuccess) => {
     setModalSuccess(isSuccess);
@@ -43,7 +42,9 @@ const Profile = () => {
       name: e.target.name.value,
       email: e.target.email.value
     })
-    context.setProfile(reqProf);
+    if (!!reqProf.email) {
+      context.setProfile(reqProf);
+    }
     handleModalOpen(!!reqProf.email);
   }, []);
 
@@ -60,14 +61,22 @@ const Profile = () => {
 
   const handleChangeName = (ev) => {
     setName(ev.target.value);
-    setDisabled(ev.target.value === profile.name);
   }
 
   const handleChangeEmail = (ev) => {
     setEmail(ev.target.value);
-    setDisabled(ev.target.value === profile.name);
   }
 
+  if (!profile || !name || !email) return null;
+
+  const isEnabledToChange = (
+    (
+      profile.name !== name ||
+      profile.email !== email
+    ) &&
+    !validateName(name).invalid &&
+    !validateEmail(email).invalid
+  );
   return (
     <ProtectedRoute>
       <section className="profile">
@@ -105,7 +114,7 @@ const Profile = () => {
           </div>
 
           <div className="profile-form__buttons">
-            <button type="submit" className="profile-form__button profile-form__button-save" disabled={disabled}>Сохранить</button>
+            <button type="submit" className="profile-form__button profile-form__button-save" disabled={isEnabledToChange}>Сохранить</button>
             <button
               onClick={handleExit}
               type={`button`}
