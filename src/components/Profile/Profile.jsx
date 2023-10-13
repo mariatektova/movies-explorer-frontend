@@ -50,7 +50,11 @@ const Profile = () => {
 
   const handleExit = () => {
     localStorage.removeItem('jwt');
+    localStorage.removeItem('saved-movies');
+    localStorage.removeItem('movies');
     context.setToken(null);
+    context.setProfile(null);
+    context.setSavedMovies(null);
     navigate('/');
   }
 
