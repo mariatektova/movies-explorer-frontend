@@ -30,8 +30,10 @@ const Login = () => {
 
   const handleModalClose = useCallback(() => {
     setModalOpen(false);
-    navigate('/movies');
-  }, []);
+    if (isModalSuccess) {
+      navigate('/movies');
+    }
+  }, [isModalSuccess]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -44,10 +46,8 @@ const Login = () => {
         if (!!res.token) {
           localStorage.setItem(`jwt`, res.token);
           context.setToken(res.token);
-          setModalSuccess(true);
           handleModalOpen(true);
         } else {
-          setModalSuccess(false);
           handleModalOpen(false);
         }
       })
