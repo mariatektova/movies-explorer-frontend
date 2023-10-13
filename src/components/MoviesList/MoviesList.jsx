@@ -5,7 +5,7 @@ import useResize from '../../hooks/useResize';
 import './MoviesList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-import { MOBSIZE, TABSIZE, DESKTPSIZE } from '../../utils/constants';
+import { MOVIESQUANTITYRENDER, ADDMOREMOVIES } from '../../utils/constants';
 
 const MoviesList = ({
     movies,
@@ -14,12 +14,12 @@ const MoviesList = ({
     const [isMoviesAdd, setIsMoviesAdd] = useState(0);
 
     const moviesQuantity = useMemo(() => {
-        const moviesQuantityRendering = size.width < MOBSIZE ? 5 : size.width < TABSIZE ? 4 : size.width < DESKTPSIZE ? 8 : 12;
+        const moviesQuantityRendering = MOVIESQUANTITYRENDER(size)
         return movies.slice(0, isMoviesAdd + moviesQuantityRendering);
     }, [movies, isMoviesAdd, size]);
 
     const handleClick = () => {
-        setIsMoviesAdd((prev) => prev + (size.width >= DESKTPSIZE ? 3 : 2));
+        setIsMoviesAdd((prev) => prev + ADDMOREMOVIES(size));
     }
 
     return (
