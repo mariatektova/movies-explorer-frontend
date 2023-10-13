@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./Movies.css";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
 
 import MoviesList from "../MoviesList/MoviesList";
 import SearchForm from "../SearchForm/SearchForm";
@@ -7,71 +8,64 @@ import Loader from "../Loader/Loader";
 import ProtectedRoute from "../ProtectedRoute";
 
 import ApiMovies from "../../utils/ApiMovies";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
+import { useEffect } from "react";
 
 const Movies = () => {
     const localStorageValues = JSON.parse(localStorage.getItem(`movies`)) ?? {};
+    const { allMovies, setAllMovies } = useContext(CurrentUserContext);
 
-    const [movies, setMovies] = useState(localStorageValues.movies ?? []);
-    const [searchQuery, setSearchQuery] = useState(localStorageValues.searchQuery ?? ``);
+    const [searchQuery, setSearchQuery] = useState(localStorageValues.query ?? ``);
     const [isShort, setShort] = useState(!!localStorageValues.isShort);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isFetching, setFetching] = useState(false);
+    const [isFetched, setFetched] = useState(!!allMovies.length);
 
-    const handleSearch = useCallback(async (q) => {
-        if (!q) {
-            setSearchQuery(``);
-            setMovies([]);
-            localStorage.setItem(`movies`, JSON.stringify({
-                searchQuery: ``,
-                isShort,
-                movies: []
-            }));
-            return;
+    const handleSearch = useCallback(async (query, isShort) => {
+        setFetching(true);
+
+        let movies = allMovies;
+
+        if (!movies.length) {
+            movies = await ApiMovies.request();
+            setAllMovies(movies);
         }
-        setIsLoading(true);
 
-        const moviesRes = await ApiMovies.request();
-        const filteredMovies = moviesRes.filter((movie) => {
-            const lowerNameRu = movie.nameRU.toLowerCase();
-            const lowerQuery = q.toLowerCase();
-            return lowerNameRu.includes(lowerQuery);
-        });
-
-        setSearchQuery(q);
-
-
-        setMovies(filteredMovies);
+        setSearchQuery(query);
+        setShort(isShort);
+        setFetched(true);
+        setFetching(false);
         localStorage.setItem(`movies`, JSON.stringify({
-            searchQuery: q,
-            isShort,
-            movies: filteredMovies
+            query,
+            isShort
+
         }));
-        setIsLoading(false);
+    }, [allMovies.length]);
 
-    }, [isShort]);
-
-    const handleShortChange = useCallback((v) => {
-        setShort(v);
-        localStorage.setItem(`movies`, JSON.stringify({
-            searchQuery,
-            isShort: v,
-            movies
-        }));
-    }, [movies, searchQuery]);
-
-    const filteredMovies = movies.filter((movie) => {
-        return movie.duration < 40 || !isShort;
+    const filteredMovies = allMovies.filter((movie) => {
+        const lowerNameRu = movie.nameRU.toLowerCase();
+        const lowerQuery = searchQuery.toLowerCase();
+        return lowerNameRu.includes(lowerQuery) && (movie.duration < 40 || !isShort);
     });
 
-    const isEmpty = !filteredMovies.length || !searchQuery;
+    useEffect(() => {
+        if ((!isFetched && !!searchQuery) || !!isShort) {
+            handleSearch(searchQuery, isShort)
+                .catch(null);
+        }
+    }, [isFetched, searchQuery, isShort])
+
+    const isEmpty = !!isFetched && !filteredMovies.length;
 
     return (
         <ProtectedRoute>
-            <section className="movies">
-                <SearchForm handleSearch={handleSearch} handleShortChange={handleShortChange} presetSearchQuery={searchQuery} presetIsShort={isShort} />
+            <section className="movies" key={allMovies.length}>
+                <SearchForm
+                    handleSearch={handleSearch}
+                    presetSearchQuery={searchQuery}
+                    presetIsShort={isShort} />
 
-                {!!isLoading && <Loader />}
-
-                {!isLoading && (
+                {isFetching && <Loader />}
+                {!isFetching && (
                     <>
                         {!!isEmpty && <p className="movies__not-found">По вашему запросу ничего не найдено</p>}
                         {!isEmpty && <MoviesList movies={filteredMovies} />}

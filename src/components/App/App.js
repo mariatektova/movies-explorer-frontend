@@ -11,6 +11,7 @@ import Api from "../../utils/Api";
 
 const App = () => {
     const [profile, setProfile] = useState({});
+    const [allMovies, setAllMovies] = useState([]);
     const [savedMovies, setSavedMovies] = useState([]);
     const [token, setToken] = useState(localStorage.getItem(`jwt`) ?? null);
 
@@ -37,7 +38,7 @@ const App = () => {
     }, [token]);
 
     return (
-        <CurrentUserContext.Provider value={{profile, setProfile, token, setToken, savedMovies, setSavedMovies}}>
+        <CurrentUserContext.Provider value={{profile, setProfile, token, setToken, allMovies, setAllMovies,savedMovies, setSavedMovies}}>
             <div className={`app`}>
                 <Header />
                 <Routes>

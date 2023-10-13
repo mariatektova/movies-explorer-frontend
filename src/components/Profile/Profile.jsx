@@ -55,6 +55,7 @@ const Profile = () => {
     localStorage.removeItem('movies');
     context.setToken(null);
     context.setProfile(null);
+    context.setAllMovies([]);
     context.setSavedMovies(null);
     navigate('/');
   }
@@ -77,6 +78,7 @@ const Profile = () => {
     !validateName(name).invalid &&
     !validateEmail(email).invalid
   );
+
   return (
     <ProtectedRoute>
       <section className="profile">
