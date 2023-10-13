@@ -14,8 +14,8 @@ const Profile = () => {
   const context = useContext(CurrentUserContext);
   const { profile } = context;
 
-  const [name, setName] = useState(profile.name ? profile.name : ``);
-  const [email, setEmail] = useState(profile.email ? profile.name : ``);
+  const [name, setName] = useState(profile ? profile.name : ``);
+  const [email, setEmail] = useState(profile ? profile.name : ``);
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [isModalSuccess, setModalSuccess] = useState(false);
@@ -116,7 +116,7 @@ const Profile = () => {
           </div>
 
           <div className="profile-form__buttons">
-            <button type="submit" className="profile-form__button profile-form__button-save" disabled={isEnabledToChange}>Сохранить</button>
+            <button type="submit" className="profile-form__button profile-form__button-save" disabled={!isEnabledToChange}>Сохранить</button>
             <button
               onClick={handleExit}
               type={`button`}
