@@ -35,30 +35,22 @@ const Login = () => {
     }
   }, [isModalSuccess]);
 
-  function handleSubmit(e) {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
 
-    Api.request(`/signin`, `POST`, {
+    const res = await Api.request(`/signin`, `POST`, {
       email: e.target.email.value,
       password: e.target.password.value
-    })
-      .then((res) => {
-        if (!!res.token) {
-          localStorage.setItem(`jwt`, res.token);
-          context.setToken(res.token);
-          handleModalOpen(true);
-        } else {
-          handleModalOpen(false);
-        }
-      })
-      .catch((err) => {
-        if (err.status === 409) {
-          console.log('Неправильные почта или пароль');
-        } else {
-          console.log('Неправильные почта или пароль');
-        }
-      });
-  }
+    });
+
+    if (!!res.token) {
+      localStorage.setItem(`jwt`, res.token);
+      context.setToken(res.token);
+      handleModalOpen(true);
+    } else {
+      handleModalOpen(false);
+    }
+  }, []);
 
   return (
     <section className="login">
