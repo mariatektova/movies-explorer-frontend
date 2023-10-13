@@ -1,7 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
+import { API_MOVIES } from "./constants"; 
 class ApiMovies {
   request = async () => {
-      const res = await fetch(`https://api.nomoreparties.co/beatfilm-movies`, {
+      const res = await fetch(API_MOVIES, {
           method: `GET`,
           headers: {'Content-Type': `application/json`}
       });

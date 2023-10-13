@@ -1,4 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
+export { API_URL } from './constants';
 
 class Api {
     url = `https://api.mariatektova.diploma.nomoredomains.rocks`;

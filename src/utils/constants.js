@@ -14,4 +14,8 @@ export const DESKTPSIZE = 1280;
     let hours = Math.trunc(mins / 60);
     let minutes = mins % 60;
     return hours + 'ч. ' + minutes + 'м.';
-}
+ }
+
+export const API_URL = `https://api.mariatektova.diploma.nomoredomains.rocks`;
+
+export const API_MOVIES = `https://api.nomoreparties.co/beatfilm-movies`;
