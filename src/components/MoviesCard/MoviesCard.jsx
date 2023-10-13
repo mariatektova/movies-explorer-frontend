@@ -6,7 +6,8 @@ import Api from '../../utils/Api';
 
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 
-import { IMAGE_URL } from '../../utils/constants';
+import { IMAGE_URL, GETTIMEFORMINS } from '../../utils/constants';
+
 
 const MoviesCard = ({ card }) => {
   const { savedMovies, setSavedMovies } = useContext(CurrentUserContext);
@@ -48,11 +49,7 @@ const MoviesCard = ({ card }) => {
 
   const isSaved = !!(savedMovies ?? []).find((movie) => movie.movieId === card.id);
 
-  function getTimeFromMins(mins) {
-    let hours = Math.trunc(mins / 60);
-    let minutes = mins % 60;
-    return hours + 'ч. ' + minutes + 'м.';
-  }
+
 
   return (
     <li className="moviescard">
@@ -61,7 +58,7 @@ const MoviesCard = ({ card }) => {
       </a>
       <div className="moviescard__details">
         <p className="moviescard__name">{card.nameRU}</p>
-        <p className="moviescard__duration">{getTimeFromMins(card.duration)}</p>
+        <p className="moviescard__duration">{GETTIMEFORMINS(card.duration)}</p>
         <button onClick={isSaved ? handleDeleteMovie : handleSaveMovie} className={`moviescard__button_save ${isSaved ? 'moviescard__button_save-saved' : ''}`} >{`Cохранить`}</button>
       </div>
     </li>
