@@ -5,7 +5,6 @@ import SearchForm from '../SearchForm/SearchForm';
 //import Loader from '../Loader/Loader';
 import ProtectedRoute from "../ProtectedRoute";
 import SavedMoviesList from "../SavedMoviesList/MoviesList";
-import Loader from '../Loader/Loader';
 
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 
@@ -18,6 +17,7 @@ const SavedMovies = () => {
     const [isFetched, setFetched] = useState(!!savedMovies.length);
 
     const handleSearch = useCallback((query, isShort) => {
+
         setSearchQuery(query)
         setShort(isShort);
         setFetched(true);
