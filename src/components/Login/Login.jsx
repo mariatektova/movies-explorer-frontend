@@ -23,6 +23,8 @@ const Login = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isModalSuccess, setModalSuccess] = useState(false);
 
+  const [isFetching, setFetching] = useState(false);
+
   const handleModalOpen = useCallback((isSuccess) => {
     setModalSuccess(isSuccess);
     setModalOpen(true);
@@ -37,6 +39,7 @@ const Login = () => {
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
+    setFetching(true);
 
     const res = await Api.request(`/signin`, `POST`, {
       email: e.target.email.value,
@@ -47,8 +50,11 @@ const Login = () => {
       localStorage.setItem(`jwt`, res.token);
       context.setToken(res.token);
       handleModalOpen(true);
+      setFetching(false)
+
     } else {
       handleModalOpen(false);
+      setFetching(false)
     }
   }, []);
 
@@ -73,10 +79,11 @@ const Login = () => {
             name="email"
             value={validation.values.email || ''}
             onChange={validation.handleChange}
-            //type="email"
+            type="email"
             placeholder="Введите почту"
             minLength="2"
             maxLength="40"
+            disabled={isFetching}
             required
           />
           <span className={`login__input-error login__input-error_active`}>{validateEmail(validation.values.email).message}</span>
@@ -92,6 +99,7 @@ const Login = () => {
             type="password"
             placeholder="Введите пароль"
             minLength="6"
+            disabled={isFetching}
             required
           />
           <span className={`login__input-error ${validation.isValid ? '' : 'login__input-error_active'}`}> {validation.password}</span>
