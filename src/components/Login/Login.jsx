@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import './Login.css';
 
-import React, { useCallback, useState, useContext } from 'react';
+import React, { useCallback, useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import Logo from '../../images/logo.svg';
@@ -51,6 +51,12 @@ const Login = () => {
       handleModalOpen(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (context.profile) {
+      navigate('/')
+    }
+  }, [context.profile])
 
   return (
     <section className="login">

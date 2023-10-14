@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import './Register.css';
 import Logo from '../../images/logo.svg';
-
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
@@ -62,6 +61,13 @@ const Register = () => {
       handleModalOpen(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (context.profile) {
+      navigate('/')
+    }
+  }, [context.profile])
+
 
   return (
     <section className="register">
