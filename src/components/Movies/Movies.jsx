@@ -21,24 +21,26 @@ const Movies = () => {
     const [isFetched, setFetched] = useState(!!allMovies.length);
 
     const handleSearch = useCallback(async (query, isShort) => {
+        if (!query) {
+            alert(`Поле не должно быть пустым`);
+            return;
+        }
         setFetching(true);
-
         let movies = allMovies;
 
         if (!movies.length) {
             movies = await ApiMovies.request();
             setAllMovies(movies);
         }
-
         setSearchQuery(query);
         setShort(isShort);
-        setFetched(true);
-        setFetching(false);
+
         localStorage.setItem(`movies`, JSON.stringify({
             query,
             isShort
-
         }));
+        setFetched(true);
+        setFetching(false);
     }, [allMovies.length]);
 
     const filteredMovies = allMovies.filter((movie) => {

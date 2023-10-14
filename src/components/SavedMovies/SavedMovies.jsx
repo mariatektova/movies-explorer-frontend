@@ -2,9 +2,10 @@ import React, { useCallback, useContext, useState } from 'react';
 import './SavedMovies.css';
 
 import SearchForm from '../SearchForm/SearchForm';
-import Loader from '../Loader/Loader';
+//import Loader from '../Loader/Loader';
 import ProtectedRoute from "../ProtectedRoute";
 import SavedMoviesList from "../SavedMoviesList/MoviesList";
+import Loader from '../Loader/Loader';
 
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 
@@ -14,26 +15,18 @@ const SavedMovies = () => {
 
     const [searchQuery, setSearchQuery] = useState(localStorageValues.searchQuery ?? ``);
     const [isShort, setShort] = useState(!!localStorageValues.isShort);
+    const [isFetched, setFetched] = useState(!!savedMovies.length);
 
-    const [isLoading, setIsLoading] = useState(false);
+    const handleSearch = useCallback((query, isShort) => {
+        setSearchQuery(query)
+        setShort(isShort);
+        setFetched(true);
 
-    const handleSearch = useCallback((q) => {
-        setIsLoading(true);
-        setSearchQuery(q);
         localStorage.setItem(`saved-movies`, JSON.stringify({
-            searchQuery: q,
+            searchQuery: query,
             isShort
         }));
-        setTimeout(() => setIsLoading(false), 200);
-    }, [isShort]);
-
-    const handleShortChange = useCallback((v) => {
-        setShort(v);
-        localStorage.setItem(`saved-movies`, JSON.stringify({
-            searchQuery,
-            isShort: v
-        }))
-    }, [searchQuery]);
+    }, []);
 
     const filteredMovies = savedMovies.filter((movie) => {
         const lowerNameRu = movie.nameRU.toLowerCase();
@@ -41,21 +34,17 @@ const SavedMovies = () => {
         return (lowerNameRu.includes(lowerQuery)) && (movie.duration < 40 || !isShort);
     });
 
-    const isEmpty = !filteredMovies.length;
+    const isEmpty = !!isFetched && !filteredMovies.length;
 
     return (
         <ProtectedRoute>
             <section className="savedmovies">
-                <SearchForm handleSearch={handleSearch} handleShortChange={handleShortChange} presetSearchQuery={searchQuery} presetIsShort={isShort} />
+                <SearchForm handleSearch={handleSearch} presetSearchQuery={searchQuery} presetIsShort={isShort} />
+                <>
+                    {!!isEmpty && <p className="movies__not-found">По вашему запросу ничего не найдено</p>}
+                    {!isEmpty && <SavedMoviesList movies={filteredMovies} />}
 
-                {!!isLoading && <Loader />}
-
-                {!isLoading && (
-                    <>
-                        {!!isEmpty && <p className="movies__not-found">По вашему запросу ничего не найдено</p>}
-                        {!isEmpty && <SavedMoviesList movies={filteredMovies} />}
-                    </>
-                )}
+                </>
             </section>
         </ProtectedRoute>
     );
