@@ -5,7 +5,7 @@ export const EMAIL_REGEX =
  
 export const DESKTPSIZE = 1000;
  
- export const TABSIZE = 768;
+ export const TABSIZE = 730;
 
  export const IMAGE_URL = 'https://api.nomoreparties.co/';
 
