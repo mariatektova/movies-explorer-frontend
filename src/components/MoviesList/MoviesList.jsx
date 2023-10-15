@@ -1,4 +1,4 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo, memo, useEffect } from 'react';
 
 import useResize from '../../hooks/useResize';
 
@@ -10,12 +10,19 @@ import { MOVIESQUANTITYRENDER, ADDMOREMOVIES } from '../../utils/constants';
 const MoviesList = ({
     movies,
 }) => {
-    const size = useResize();
+    let size = useResize();
     const [isMoviesAdd, setIsMoviesAdd] = useState(0);
 
+    useEffect(() => {
+        if (size) {
+            setIsMoviesAdd(0);
+        }
+    }, [movies, size]);
+
+
     const moviesQuantity = useMemo(() => {
-        const moviesQuantityRendering = MOVIESQUANTITYRENDER(size)
-        return movies.slice(0, isMoviesAdd + moviesQuantityRendering);
+        const countToRender = MOVIESQUANTITYRENDER(size);
+        return movies.slice(0, countToRender + isMoviesAdd);
     }, [movies, isMoviesAdd, size]);
 
     const handleClick = () => {
@@ -27,7 +34,8 @@ const MoviesList = ({
             <ul className="movies__list">
                 {moviesQuantity.map((card) => <MoviesCard key={card.id} card={card} />)}
             </ul>
-            {movies.length > moviesQuantity.length && <button className="movies__button-add" onClick={handleClick}>Еще</button>}
+            {movies.length > moviesQuantity.length && <button className="movies__button-add" onClick={handleClick}>
+                Еще</button>}
         </>
     );
 }

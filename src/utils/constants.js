@@ -19,6 +19,7 @@ export const API_URL = `https://api.mariatektova.diploma.nomoredomains.rocks`;
 
 export const API_MOVIES = `https://api.nomoreparties.co/beatfilm-movies`;
 
-export const MOVIESQUANTITYRENDER = (props) => props.width < 768 ? 5 : props.width < 1000 ? 8 : 12;
+export const MOVIESQUANTITYRENDER = (props) =>  props.width < TABSIZE ? 5 : props.width < 1167 ? 8 : props.width < 1168 ? 8 :12;
 
-export const ADDMOREMOVIES = (props)=>props.width >= DESKTPSIZE ? 3 : 2;
+
+export const ADDMOREMOVIES = (props)=>props.width >= 1168 ? 3 : 2;
