@@ -68,7 +68,7 @@ const Profile = () => {
     setEmail(ev.target.value);
   }
 
-  if (!profile || !name || !email) return null;
+  //if (!profile || !name || !email) return null;
 
   const isEnabledToChange = (
     (
