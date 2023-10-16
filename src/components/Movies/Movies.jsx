@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import "./Movies.css";
-import React, { useState, useCallback, useContext } from "react";
+import React, { useState, useCallback, useContext, useEffect, useMemo, memo } from "react";
 
 import MoviesList from "../MoviesList/MoviesList";
 import SearchForm from "../SearchForm/SearchForm";
@@ -9,7 +9,9 @@ import ProtectedRoute from "../ProtectedRoute";
 
 import ApiMovies from "../../utils/ApiMovies";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
-import { useEffect } from "react";
+import { MOVIESQUANTITYRENDER, ADDMOREMOVIES } from '../../utils/constants';
+import useResize from '../../hooks/useResize';
+
 
 const Movies = () => {
     const localStorageValues = JSON.parse(localStorage.getItem(`movies`)) ?? {};
@@ -19,6 +21,9 @@ const Movies = () => {
     const [isShort, setShort] = useState(!!localStorageValues.isShort);
     const [isFetching, setFetching] = useState(false);
     const [isFetched, setFetched] = useState(!!allMovies.length);
+    const [isMoviesAdd, setIsMoviesAdd] = useState(0);
+    let size = useResize();
+
 
     const handleSearch = useCallback(async (query, isShort) => {
         if (!query) {
@@ -43,11 +48,27 @@ const Movies = () => {
         setFetching(false);
     }, [allMovies.length]);
 
+
+
     const filteredMovies = allMovies.filter((movie) => {
         const lowerNameRu = movie.nameRU.toLowerCase();
         const lowerQuery = searchQuery.toLowerCase();
         return lowerNameRu.includes(lowerQuery) && (movie.duration < 40 || !isShort);
     });
+
+    const moviesQuantity = useMemo(() => {
+        const countToRender = MOVIESQUANTITYRENDER(size);
+        return filteredMovies.slice(0, countToRender + isMoviesAdd);
+    }, [filteredMovies, isMoviesAdd, size]);
+
+    console.log(moviesQuantity);
+
+    useEffect(() => {
+        if (size) {
+            setIsMoviesAdd(0);
+        }
+    }, [size]);
+
 
     useEffect(() => {
         if ((!isFetched && !!searchQuery) || !!isShort) {
@@ -56,7 +77,12 @@ const Movies = () => {
         }
     }, [isFetched, searchQuery, isShort])
 
-    const isEmpty = !!isFetched && !filteredMovies.length;
+    const isEmpty = !!isFetched && !moviesQuantity.length;
+
+
+    const handleClick = () => {
+        setIsMoviesAdd((prev) => prev + ADDMOREMOVIES(size));
+    }
 
     return (
         <ProtectedRoute>
@@ -70,11 +96,13 @@ const Movies = () => {
                 {!isFetching && (
                     <>
                         {!!isEmpty && <p className="movies__not-found">По вашему запросу ничего не найдено</p>}
-                        {!isEmpty && <MoviesList movies={filteredMovies} />}
+                        {!isEmpty && <MoviesList movies={moviesQuantity} />}
+                        {moviesQuantity.length && <button className="movies__button-add" onClick={handleClick}>
+                            Еще</button>}
                     </>
                 )}
             </section>
         </ProtectedRoute>
     );
 };
-export default Movies;
+export default memo(Movies);
